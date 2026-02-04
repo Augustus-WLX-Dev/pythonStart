@@ -42,7 +42,7 @@
 *   **Await** (骑士) 把包裹和 Future 交给 **Event Loop** (丞相)。
 *   Event Loop 把包裹挂起（冻结），去处理别的任务。
 *   直到 **Line 22** `self.green_light.set()` 把星际信号灯变成绿色。
-*   Event Loop 收到通知，把包裹通过 **Await**（虫洞）送回原位，右手异步函数继续执行。
+*   Event Loop 收到手中 Future 的通知，把包裹通过 **Await**（虫洞）送回原位，右手异步函数继续执行。
 
 ## Line 46-47: 宇宙终焉
 `await task1`
