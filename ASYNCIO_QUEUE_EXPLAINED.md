@@ -50,32 +50,38 @@ See `src/asy_queue_simple.py` for the implementation.
 > `await asyncio.gather(*producers)`
 
 **English**: This line creates an aggregated `Future`. Thus, `await asyncio.gather(*producers)` is conceptually equivalent to `await Future`.
-Accumulated, it acts like an **Electronic Tracking Number**.
+
+**Metaphor: The Dual Phone / Electronic Contract**
+The `Future` acts like a contract signed in duplicate, or a "Dual Phone" hotline.
 A `Future` is an object with 3 functions:
 1.  **State Machine**: Currently `Pending` (can be `Finished` or `Cancelled`).
 2.  **Mailbox**: Holds the `_result` (initially incomplete). Default completion result is `None`.
 3.  **Pager/Caller**: Contains a list of `callbacks`. Triggers automatically when state becomes `Finished` or `Cancelled`.
 
-**The Awakening Process**:
-1.  **Binding**: When `main()` calls `await`, it binds itself to the Future's callback list.
-2.  **Handover**: `main()` hands control to the **Event Loop** (which is an emotionless machine).
-3.  **Ignition**: The Event Loop immediately fires up all tasks in the Ready Queue (including consumers).
-4.  **Completion**: When producers finish, the Future's State Machine turns to `Finished`, the Mailbox gets `_result(None)`, and the **Callback automatically triggers**.
-5.  **Wake Up**: The Callback calls `main()` and throws it back into the Ready Loop. The emotionless Event Loop sees `main()` again and runs it.
+**The Workflow**:
+1.  **Creation**: `main()` uses `asyncio.gather` to create this "Dual Phone" contract.
+2.  **Handover**: It hands the "Alarm Phone" (the right to set the result) to the **Supervisor** (`asyncio.gather` internal logic).
+3.  **Binding**: `main()` binds itself to the Future's callback list (holding the "Receiver Phone").
+4.  **Ignition**: Event Loop takes control and runs all tasks.
+5.  **Trigger**: When the Supervisor sees all producers finish, it presses the button: `Future.set_result(None)`.
+6.  **Wake Up**: The Future lights up, automatically calls `main()` via callback. The "Face-blind" Event Loop sees `main()` again and runs it.
 
 **中文**: 这一行代码创造了一个聚合版的 `Future`。因此，`await asyncio.gather(*producers)` 本质上就是在 `await Future`。
-它就像是一张 **电子快递单**。
+
+**比喻：双机热线 / 电子合同**
+Future 类似于一式两份的电子合同，也类似 **双机热线 (Dual Phone)**。
 一个 `Future` 是拥有 3 种功能的对象：
 1.  **状态机**: 目前是 `Pending` (还有 `Finished` 和 `Cancelled`)。
 2.  **信箱**: 告知完成度 `_result`，目前是未完成。默认完成是传入 `None`。
 3.  **呼叫机**: 内部有很多 `callbacks`。一旦状态机变成 `Finished` 或 `Cancelled`，信箱汇报结果 (或异常)，呼叫机就会自动触发 (自己打电话喊人起床或通知取消)。
 
-**唤醒流程**:
-1.  **绑定**: `main()` 通过 `await` (虫洞) 将自己绑定到了 Future 的 callback 列表里，然后交出主权。
-2.  **接管**: **Event Loop** (一个没有感情的死循环机器) 接管控制权。
-3.  **点火**: Event Loop 立刻启动 Ready Queue 里所有的 tasks (包括消费者机器人)。
-4.  **完成**: 当所有生产者跑完，Future 自己就会亮起来 (状态机变绿)，触发 Callback。
-5.  **唤醒**: Callback 自动打电话给 `main()`，把它扔回 Ready Queue。脸盲的 Event Loop 看到又有一个 task (`main`)，就把它扔进内存让它继续跑。
+**工作流程**:
+1.  **创造**: `main()` 通过 `asyncio.gather` 创造出一式两份的 Future 对象。
+2.  **移交**: 把用来报警的那份 Future (设置 result 的全权) 交给了 **监工** (`asyncio.gather` 内部逻辑)。
+3.  **绑定**: `main()` 将自己绑定到 Future 的 callback 列表 (拿着接听的电话)。
+4.  **点火**: Event Loop 拿过主权，立刻运行所有 Tasks。
+5.  **触发**: 当监工看见所有的 Producers 跑完，它按下 `Future.set_result(None)`。
+6.  **唤醒**: Future 亮起来，触发 Callback，自动打电话给 `main()`。脸盲的 Event Loop 看到又有一个 task (`main`)，就把它扔进内存让它继续跑。
 
 ---
 
