@@ -10,7 +10,7 @@ See `src/asy_queue_simple.py` for the implementation.
 
 ## Microscopic Breakdown / 微观拆解
 
-### 1. The Creation (Line 80) / 创世 (第 80 行)
+### 1. The Creation (Line 79) / 创世 (第 79 行)
 > `asyncio.run(main())`
 
 **English**: The Prime Creator creates the **Event Loop** and throws `main()` into the **Ready Queue**. The Event Loop begins to turn.
@@ -19,7 +19,7 @@ See `src/asy_queue_simple.py` for the implementation.
 
 ---
 
-### 2. The LP Pool (Line 42) / 建立流动性池 (第 42 行)
+### 2. The LP Pool (Line 44) / 建立流动性池 (第 44 行)
 > `queue = asyncio.Queue(maxsize=2)`
 
 **English**: The Prime Creator instantiates the **LP Pool** (Liquidity Pool). This is the shared Pool for the entire universe, with a strict quota limit of 2 items max.
@@ -28,7 +28,7 @@ See `src/asy_queue_simple.py` for the implementation.
 
 ---
 
-### 3. The Market Makers (Lines 48-51) / 做市商发射 (第 48-51 行)
+### 3. The Market Makers (Lines 48-50) / 做市商发射 (第 48-50 行)
 > `producers = [asyncio.create_task(...), ...]`
 
 **English**: Two parallel rockets are launched using an array. These are the **Producers** connected to the shared Pool, acting as **Market Makers** in the Web3 analogy.
@@ -37,7 +37,7 @@ See `src/asy_queue_simple.py` for the implementation.
 
 ---
 
-### 4. The Consumer Robots (Lines 55-58) / 消费者机器人发射 (第 55-58 行)
+### 4. The Consumer Robots (Lines 55-57) / 消费者机器人发射 (第 55-57 行)
 > `consumers = [asyncio.create_task(...), ...]`
 
 **English**: Two parallel rockets are launched as **Consumer Robots**, also connected to the same shared Pool to strip liquidity.
@@ -46,7 +46,7 @@ See `src/asy_queue_simple.py` for the implementation.
 
 ---
 
-### 5. The Microscopic Future (Line 62) / 微观 Future 机制 (第 62 行)
+### 5. The Microscopic Future (Line 61) / 微观 Future 机制 (第 61 行)
 > `await asyncio.gather(*producers)`
 
 **English**: This line creates an aggregated `Future`. Thus, `await asyncio.gather(*producers)` is conceptually equivalent to `await Future`.
@@ -85,7 +85,7 @@ Future 类似于一式两份的电子合同，也类似 **双机热线 (Dual Pho
 
 ---
 
-### 6. The Shared State Check (Line 68) / 流动性清空检查 (第 68 行)
+### 6. The Shared State Check (Line 67) / 流动性清空检查 (第 67 行)
 > `await queue.join()`
 
 **English**: This line ensures the shared LP Pool is completely drained before proceeding.
@@ -96,7 +96,7 @@ Future 类似于一式两份的电子合同，也类似 **双机热线 (Dual Pho
 
 ---
 
-### 7. Manual Destruction (Lines 73-74) / 手动销毁 (第 73-74 行)
+### 7. Manual Destruction (Lines 72-73) / 手动销毁 (第 72-73 行)
 > ```python
 > for c in consumers:
 >     c.cancel()
@@ -108,7 +108,7 @@ Future 类似于一式两份的电子合同，也类似 **双机热线 (Dual Pho
 
 ---
 
-### 8. Controlled Explosion (Line 77) / 可控爆破 (第 77 行)
+### 8. Controlled Explosion (Line 76) / 可控爆破 (第 76 行)
 > `await asyncio.gather(*consumers, return_exceptions=True)`
 
 **English**: Just like the `gather` in Section 5, this creates a **Supervisor**.
