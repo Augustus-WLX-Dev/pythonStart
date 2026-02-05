@@ -88,14 +88,19 @@ Future 类似于一式两份的电子合同，也类似 **双机热线 (Dual Pho
 ### 6. The Shared State Check (Line 68) / 流动性清空检查 (第 68 行)
 > `await queue.join()`
 
-**English**: This line ensures the shared LP Pool is completely drained before proceeding. Its purpose is to force the universe to wait until Consumer Robots have finished all their processing, preventing the code from ending with data still "in flight" (fetched but not consumed).
+**English**: This line ensures the shared LP Pool is completely drained before proceeding.
+**Mechanism**: It operates exactly like the "Microscopic Future" in Section 5, but this time the **Supervisor** holding the "Alarm Phone" is the `queue` object itself (checking its internal counter).
 
-**中文**: 这是确认共享的 LP Pool 完全被取空了，代码才会继续往下走。它的作用是为了在结束代码前，让消费者机器人把所有的事情做完，而不是数据刚取出还没消费，程序就结束了。
+**中文**: 这是确认共享的 LP Pool 完全被取空了，代码才会继续往下走。
+**机制**: 它的内部运行机制完全等同于第 5 节的“微观 Future”，只不过这一次手握“必杀技遥控器”的 **监工** 变成了 `queue` 对象本身 (它盯着内部计数器)。
 
 ---
 
 ### 7. Manual Destruction (Lines 73-74) / 手动销毁 (第 73-74 行)
-> `c.cancel()`
+> ```python
+> for c in consumers:
+>     c.cancel()
+> ```
 
 **English**: Because Consumer Robots run in infinite loops (`while True`), they will never stop on their own. We must manually **cancel** them to reclaim memory.
 
