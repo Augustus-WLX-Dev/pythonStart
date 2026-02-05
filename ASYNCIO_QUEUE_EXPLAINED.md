@@ -1,12 +1,12 @@
 # Asyncio Queue: A Microscopic Analysis / Asyncio Queue 微观深度解析
 
-This document provides a deep dive into the underlying mechanics of `asy_queue_simple.py`, using a metaphorical framework connecting Python's `asyncio` to a Universe and Web3 concepts.
-本文档提供了对 `asy_queue_simple.py` 底层机制的深入剖析，使用了“宇宙”和“Web3”概念作为比喻框架。
+This document provides a deep dive into the underlying mechanics of `src/asy_queue_simple.py`, using a metaphorical framework connecting Python's `asyncio` to a Universe and Web3 concepts.
+本文档提供了对 `src/asy_queue_simple.py` 底层机制的深入剖析，使用了“宇宙”和“Web3”概念作为比喻框架。
 
 ## The Code / 代码
 
-See `asy_queue_simple.py` for the implementation.
-请参阅 `asy_queue_simple.py` 查看具体实现。
+See `src/asy_queue_simple.py` for the implementation.
+请参阅 `src/asy_queue_simple.py` 查看具体实现。
 
 ## Microscopic Breakdown / 微观拆解
 
