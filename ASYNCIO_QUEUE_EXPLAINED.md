@@ -111,9 +111,17 @@ Future 类似于一式两份的电子合同，也类似 **双机热线 (Dual Pho
 ### 8. Controlled Explosion (Line 77) / 可控爆破 (第 77 行)
 > `await asyncio.gather(*consumers, return_exceptions=True)`
 
-**English**: When consumers are cancelled, a `CancelledError` bursts through their infinite loop. This line tells the Event Loop that this specific error is **expected behavior**, so it stays silent (no stack trace prints) and the program exits gracefully.
+**English**: Just like the `gather` in Section 5, this creates a **Supervisor**.
+**Mechanism**:
+1.  **Exception Supervisor**: This time, it doesn't just check for "Done". It also checks for "Crashed".
+2.  **Expected Behavior**: `return_exceptions=True` tells the Supervisor: "If a robot explodes (raises Error), put the explosion debris (the Exception object) into the result box instead of stopping the whole assembly line."
+3.  **Result**: The Event Loop sees the `CancelledError` as a valid return value, so it doesn't print a scary traceback or crash the program.
 
-**中文**: 让消费者 cancel 时会有 error 冲破消费者的死循环，这行代码就是 Event Loop 说这个错误是 **预期内的 (Expected)**，不用惊慌 (不用打印报错信息)。
+**中文**: 就像第 5 节的 `gather` 一样，这里也建立了一个 **监工**。
+**机制**:
+1.  **异常监工**: 这一次，它不仅检查“完工”，还检查“报错”。
+2.  **预期行为**: `return_exceptions=True` 告诉监工：“如果机器人爆炸了 (抛出 Error)，请把碎片 (Error 对象) 当作正常的‘结果’收起来，不要让整个流水线停机。”
+3.  **结果**: Event Loop 认为 `CancelledError` 是一个有效的返回值，因此不会打印可怕的报错信息，程序优雅退出。
 
 ---
 
