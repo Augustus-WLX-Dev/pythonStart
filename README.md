@@ -1,6 +1,6 @@
 # Python Learning Journey 🚀
 
-欢迎来到我的 Python 学习仓库。这里主要记录了我对 `asyncio` 异步编程的深度探索与实践总结。
+欢迎来到我的 Python 学习仓库。这里目前主要记录了我对 `asyncio` 异步编程的深度探索与实践总结。
 
 ## 📂 仓库资源 (Repository Resources)
 
@@ -11,8 +11,7 @@
 - [**Asyncio Queue 详解**](docs/ASYNCIO_QUEUE_EXPLAINED.md): 生产者-消费者模型的实战指南。
 - [**Asyncio 编年史**](docs/asyncio_chronicles.md): 记录学习过程中的重大突破。
 
-### 🤖 私有实现 (Private Implementation)
-- **`src/`**: 包含某些特定的生产环境代码实现（由于涉及第三方代码或私有逻辑，该目录仅在本地保留，不上传至 GitHub）。
+
 
 ---
 
