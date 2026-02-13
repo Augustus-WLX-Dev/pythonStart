@@ -41,7 +41,7 @@ When you run `asyncio.run(main())`, the studio immediately assigns a Director & 
 
 *   The **Director & Star** enters the **Main Lens (Event Loop)** to perform according to the script (CPU calculation).
 
-    **导演 & 主演**带着剧本进入**主镜头（Event Loop）**开始工作（CPU 计算）。
+    **导演 & 主演**带着剧本进入 **主镜头（Event Loop）** 开始工作（CPU 计算）。
 
 *   When the **Script Scene (Coroutine)** requires a transformation (Blocking task/IO), it `yields` the **Future (Supervisor)** up through each **await (Wormhole)**.
 
@@ -53,7 +53,7 @@ When you run `asyncio.run(main())`, the studio immediately assigns a Director & 
 
 *   Actors go to the **Off-screen Lens (to_thread/ThreadPool)** to change. The **Director & Star** exits the stage (leaves the Ready Queue), and the camera (Event Loop) begins filming other ready actors in the Main Lens.
 
-    演员去**幕后镜头（to_thread/ThreadPool）**换造型。**导演 & 主演**退场休息（退出 Ready Queue），摄像机（Event Loop）开始拍摄主镜头里其他就绪的演员。
+    演员去 **幕后镜头（to_thread/ThreadPool）** 换造型。**导演 & 主演**退场休息（退出 Ready Queue），摄像机（Event Loop）开始拍摄主镜头里其他就绪的演员。
 
 ### 3. Relay & Wake-up
 
