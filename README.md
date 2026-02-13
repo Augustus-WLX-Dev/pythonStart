@@ -6,8 +6,8 @@
 
 ### 📚 核心原理精讲 ([docs/](docs/))
 这里存放了所有深度学习笔记，涵盖了异步编程中最核心的理论模型：
-- [**导演与摄像机模型 (Asyncio Meta-Theory)**](docs/asyncio_meta_theory.md): **[推荐阅读]** 用电影片场的隐喻彻底打通 Asyncio 底层机制。
-- [**Asyncio 深度潜水 (Deep Dive)**](docs/async_deep_dive.md): 探索协程、任务与 Future 的技术细节。
+- [**导演与摄像机模型 (Asyncio Meta-Theory)**](docs/asyncio_meta_theory.md): **[宏观架构]** 用电影片场的隐喻彻底打通 Asyncio 底层机制。
+- [**blocking_fix 深度剖析 (Deep Dive)**](docs/blocking_fix_deep_dive.md): **[微观细节]** 针对代码逐行拆解，揭示每一行代码背后的“物理反应”。
 - [**Asyncio Queue 详解**](docs/ASYNCIO_QUEUE_EXPLAINED.md): 生产者-消费者模型的实战指南。
 - [**Asyncio 编年史**](docs/asyncio_chronicles.md): 记录学习过程中的重大突破。
 
