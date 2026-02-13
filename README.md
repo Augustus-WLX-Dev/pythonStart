@@ -9,7 +9,8 @@
 - [**导演与摄像机模型 (Asyncio Meta-Theory)**](docs/asyncio_meta_theory.md): **[宏观架构]** 用电影片场的隐喻彻底打通 Asyncio 底层机制。
 - [**blocking_fix 深度剖析 (Deep Dive)**](docs/blocking_fix_deep_dive.md): **[微观细节]** 针对代码逐行拆解，揭示每一行代码背后的“物理反应”。
 - [**Asyncio Queue 详解**](docs/ASYNCIO_QUEUE_EXPLAINED.md): 生产者-消费者模型的实战指南。
-- [**Asyncio 编年史**](docs/asyncio_chronicles.md): 记录学习过程中的重大突破。
+- [**Asyncio 编年史 (Chronicles)**](docs/asyncio_chronicles.md): **[宇宙演化论]** 记录学习过程中的重大突破。
+  - 对应源码：[asy_practice.py](src/asy_practice.py) (事件与信号) & [asy_queue_simple.py](src/asy_queue_simple.py) (队列与同步)
 
 
 
