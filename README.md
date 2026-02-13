@@ -39,5 +39,5 @@ This directory contains all deep learning notes, covering the most core theoreti
    **深度探索**：根据 `docs/` 下的其他文档进一步挖掘异步编程的原理。
 
 ---
-*Record growth, keep the passion. Happy Coding!*  
-*记录成长，保持热爱。 Happy Coding!*
+*Look, this is my universe. Enjoy it or leave it.*  
+*这是我的宇宙。喜欢就来，不喜欢随意。*
