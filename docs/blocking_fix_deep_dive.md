@@ -16,14 +16,12 @@
 **English**:
 1. The Python interpreter uses the `asyncio` blueprint to initialize the library and generate the **Event Loop (Main Lens)**.
 2. `asyncio.run(main())` internally creates a `Runner` object. The `Runner` calls `Loop.create_task(main())`, and the **Main Task (Director & Star)** appears.
-3. The `main` function is wrapped into the **Task**, which places `main()` into the **Event Loop's Ready Queue**.
-4. The **Event Loop** sees `main` in the Ready Queue and lets it run in memory.
+3. The **main** function is wrapped into a **Task**, and the **Task** enters the **Event Loop Ready Queue**. The **Event Loop** sees the **Main Task** in the **Ready Queue** and lets it run in memory. The **Task** running is effectively `main()` running (`Loop.create_task(main())`).
 
 **中文**：
 1. Python 解释器通过 `asyncio` 蓝图生成 `asyncio` 环境，并生成 **Event Loop (主镜头)**。
 2. `asyncio.run(main())` 内部创建 `Runner` 对象，`Runner` 调用 `Loop.create_task(main())`，**主 Task (导演 & 主演)** 出现。
-3. `main` 函数被包装进 **Task**，Task 在 **Event Loop Ready Queue** 安置 `main()`。
-4. **Event Loop** 看到 Ready Queue 里有 `main` 函数，让 `main` 进入内存跑起来。
+3. **main** 函数被包装进 **Task**，**Task** 进入 **Event Loop Ready Queue**。**Event Loop** 看到 **Ready Queue** 里有 **主 Task**，让 **主 Task** 进入内存跑起来，**Task** 跑起来就是 `main()` 跑起来 (`Loop.create_task(main())`)。
 
 ---
 
