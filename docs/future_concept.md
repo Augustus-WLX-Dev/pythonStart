@@ -18,7 +18,7 @@ This document records the refined mental model of the `Future` object—the fund
 *   **Exception (The Bomb)**: If an error occurs, it is placed here. 
     *   > [!CAUTION]
     *   An uncaught `Exception` in the mailbox is a **Live Bomb**. If you `await` it without `try...except`, it will detonate, triggering a chain reaction (meltdown) of the Task or TaskGroup.
-*   **Delivery**: Once either compartment is filled, the contract is "Delivered" (送达).
+*   **Settlement**: Once either compartment is filled, the state of the contract immediately freezes as **"Finished"**.
 
 ## 📟 3. Pager (Call Machine): The Signal Dispatcher
 
@@ -51,7 +51,7 @@ This document records the refined mental model of the `Future` object—the fund
 *   **Exception 格（炸弹）**：如果运行出错，异常会被塞入此格。
     *   > [!CAUTION]
     *   信箱中未捕获的报错就是**定时炸弹**。如果你直接 `await` 它而没有使用 `try...except` 捕获，它会原地引爆，并引发整个 Task 或 TaskGroup 的连锁熔断。
-*   **投递**：无论哪个格子被填入，这份契约都算作“已送达”（Delivered）。
+*   **状态同步**：无论哪个格子被填入，这份契约的状态都会立即凝固为**“已完成”（Finished）**。
 
 ## 📟 3. 呼叫机：信号分发器
 
