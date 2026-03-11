@@ -15,6 +15,8 @@ This directory contains all deep learning notes, covering the most core theoreti
 
 #### 🇬🇧 English Edition
 
+- [**Asyncio Lock (Deep Dive)**](docs/asyncio_lock_guide.md): **[Under the Hood]** A bilingual, line-by-line low-level concurrent analysis of `asyncio.Lock`.
+
 - [**Semaphore Master Guide (Deep Dive)**](docs/asyncio_semaphore_guide.md): **[Under the Hood]** A bilingual, line-by-line low-level concurrent analysis of `asyncio.Semaphore`.
 
 - [**Asyncio TaskGroups (Structured Concurrency)**](docs/asy_taskgroups_walkthrough.md): **[Modern Pattern]** Using the "Safety Escape Pod" metaphor to master Python 3.11's TaskGroups and ExceptionGroups.
@@ -33,6 +35,8 @@ This directory contains all deep learning notes, covering the most core theoreti
 ---
 
 #### 🇨🇳 中文版 (Chinese Edition)
+
+- [**Asyncio Lock (深度剖析)**](docs/asyncio_lock_guide.md): **[底层揭秘]** 中英双语，逐行级拆解 `asyncio.Lock` 的极客指南。  
 
 - [**Semaphore 核心逻辑通俗解析 (Master Guide)**](docs/asyncio_semaphore_guide.md): **[底层揭秘]** 中英双语，逐行级拆解 `asyncio.Semaphore` 的极客指南。
 
