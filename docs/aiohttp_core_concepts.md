@@ -1,7 +1,7 @@
 # 🚀 aiohttp 实战与核心心法笔记
 ```python
 """
-aiohttp 核心心法实战 Demo (85分达成版)
+aiohttp 核心心法实战 Demo 
 涵盖：
 1. ClientSession 全局水利枢纽与蓄水池 (TCPConnector)
 2. Semaphore 应用层大坝防洪
