@@ -1,4 +1,4 @@
-# collections_deque ｜ Ready Queue
+# collections_deque
 
 ```python
 # Lib/asyncio/base_events.py
