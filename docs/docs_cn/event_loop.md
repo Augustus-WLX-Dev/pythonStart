@@ -113,7 +113,7 @@ def _step(self):
 
 ***
 
-#### 极限竞速
+### 极限竞速
 在“自杀线”里，这两条线确实是完全竞争的（Race Condition）。万一极端巧合发生了呢？
 
 假设在 `t = 4.999999` 秒的时候，Future 刚好拿到了结果，把唤醒 Handle 塞进了 Ready Queue；但几乎在同一瞬间 `t = 5.0`，Event Loop 也把超时地雷塞进了 Ready Queue。这俩 Handle 都在 Ready Queue 里排队了，会发生什么？
