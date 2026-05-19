@@ -32,6 +32,16 @@ class BaseEventLoop:
   self.rightblock.rightlink = new_block
   new_block.leftlink = self.rightblock
   ```
+  - 这两段代码分别是 Python 应用层的调用和 CPython 底层 C 语言实现的伪代码。
+    - `self._ready.append(handle)` (Python 应用层)
+    - `self.rightblock`：代表当前队伍最后面的那个人（队尾）。
+    - `new_block`：代表你要新加进来的这个人（也就是上面的 handle）。
+    - `rightlink` 和 `leftlink` ：也就是前面文档里提到的指针（虫洞），分别指向右边（后一个）和左边（前一个）的人。
+
+  - 这两行代码的执行过程就像是两个人手拉手：
+
+    - `self.rightblock.rightlink = new_block`：原来队尾的人，伸出右手（向右的指针），抓住了新来的人。
+    - `new_block.leftlink = self.rightblock`：新来的人，伸出左手（向左的指针），抓住了原来队尾的人。
 
 * **出队 (离队)**：瞬间从队头移除。后面的人完全不需要往前挪动任何物理位置，因为他们之间是通过指针（虫洞）连在一起的。只需要切断第一个人和第二个人相连的指针，把“队头信标”直接插在第二个人头上就行了：
   ```python
@@ -41,6 +51,19 @@ class BaseEventLoop:
   self.leftblock = old_block.rightlink
   self.leftindex = 0
   ```
+  - `handle = self._ready.popleft()` (Python 应用层)
+    - `.popleft()` 顾名思义，就是从左边（队头）弹出一个元素。
+    - 在 asyncio 的 Event Loop 中，这句话的意思是：“去 Ready Queue（就绪队列）的最前面，把排在第一位的那个执行卡片（handle）拿出来准备执行。”
+    
+  - 下面两行 CPython 底层逻辑
+    - 背景知识：在 CPython 底层，deque 维护了一个代表“这是队头”的信标（即 `self.leftblock` 指针）。
+    - `old_block`：是刚刚被弹出的那个元素所在的块（即原来的队头）。
+    - `self.leftblock = old_block.rightlink`： 这行代码是核心魔法。底层完全没有去挪动队伍里的其他人。它只是把写着“队头”的那顶帽子（leftblock 指针），从第一个人（old_block）头上摘下来，直接扣到了他右边的那个人（old_block.rightlink，也就是原来的第二个人）头上！
+    - `self.leftindex = 0`： 因为底层是分块（block）存储的，当一个块空了，信标转移到下一个新的块时，我们要告诉系统：“这个新块里的第 0 个位置，就是现在的队头”。
+
+
+
+
 
 因此，在所有需要处理海量“先进先出 (FIFO)”排队模型的地方（比如 `asyncio` 的内部等待队列、业务消息队列），Python 官方永远推荐使用 `collections.deque()` 而不是用普通的 `list`（数组）。
 
