@@ -15,7 +15,7 @@
 
 ## 2. 信箱
 
-当 future 变成 finished 状态后，它的信箱会有其任何一种 content：Result（结果） 或 Exception（异常）。
+当 future 变成 finished 状态后，它的信箱会有其中一种 content：Result（结果） 或 Exception（异常）。
 
 * **Result**：默认值 `None`（作占位符），但如果协程有 return 其他内容，则这内容赋值给 Result。
 * **Exception**：异常被填入此格。
