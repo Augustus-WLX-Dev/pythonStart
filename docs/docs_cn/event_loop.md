@@ -14,9 +14,9 @@ Event loop 主要任务就是循环交权。它内部有一个巨大的死循环
 * Event loop 会依次交权给 Ready Queue 里排队的任务，让它们走到内存里，运行起来。
 * Ready Queue 是一个双端队列。（[点击查看：双端队列剖析](collection_deque.md)）
 
-**Scheduled Queue 是一个地雷监控区。**（后续插入 Minimum heap 讲解）
+**Scheduled Queue 是一个超时监控区。**（后续插入 Minimum heap 讲解）
 * 它是一个基于时间调度的最小堆计划队列（Minimum heap），也就是时间越短排在越前。
-* Event loop 每循环一次 `while True`，第一步先去看一眼堆顶。当有任务超时，Event loop 就会 pop 掉 Scheduled Queue 的堆顶，把地雷放进 Ready Queue，让它准备引爆自己()。
+* Event loop 每循环一次 `while True`，第一步先去看一眼堆顶。当有任务超时，Event loop 就会拿出 Scheduled Queue 的堆顶，把它放进 Ready Queue，让它准备引爆自己。
 
 ***
 
@@ -24,14 +24,14 @@ Event loop 主要任务就是循环交权。它内部有一个巨大的死循环
 
 一个 `Task` 有两条生命线，一条是正常运行，一条是超时自杀。这两条生命线互相竞争，在时间上先跑完的那一条，将获得杀死对方的权利。
 
-**开局布阵（埋下地雷）**
+**开局布阵（埋下地雷———时间监控）**
 1. `t = 0`, 配置超时 5 秒爆炸的地雷（`loop.call_later(5, 撕票回调)`）制造一个 Handle，这个 Handle 被埋进 Scheduled Queue。同时 `call_later` 把这个 handle 对象存进名叫 `timeout_handle` 的局部变量里（Scheduled Queue 里的 handle 和 `timeout_handle` 其实是同一个对象）。
 
 2. 代码在遇到 `await` 后，task 把 callback 绑定到 future, 自己悬挂休眠，交出 CPU 控权。future 负责接收信号，等待回传，Event loop 则拿走控制权。
 
 > **剧情走向概述：**
 > * **生还线**：信息及时回传 -> future 状态改变 -> 唤醒 task -> task 重新拿到 CPU -> 继续运行并顺手拆除炸弹。
-> * **自杀线**：Event loop 发现超时 -> 炸弹被放进 Ready Queue排队 -> 炸弹拿到 CPU 后引爆 -> 强制杀死 task。
+> * **自杀线**：Event loop 发现超时 -> 炸弹被放进 Ready Queue排队 -> 炸弹拿到 CPU 运行权后引爆自己 -> 强制杀死 task。
 
 ---
 
@@ -106,10 +106,24 @@ def _step(self):
 1. 在 `t < 5` 秒时，Scheduled Queue 的地雷并没有被拆除。
 2. `t = 5`， Event loop 监控到 Scheduled Queue 的堆顶超时。Event loop 把超时地雷 pop 出来， 塞进 Ready Queue。
 3. 当 Event loop 交权（`handle.run()` ） 给地雷，地雷运行，地雷的火药（`task.cancel()` ）被触发。
-4. `task.cancel()` 做了两件事：一是跑到 task 内部，给 task 盖上猩红的取消戳（`self._must_cancel = True`）；二是跑到底层还在傻等的 future 对象（即 `self._fut_waiter`）内部，强制把它的状态改为 cancelled。
+4. `task.cancel()` 做了两件事：一是跑到底层还在傻等的 future 对象（即 `self._fut_waiter`）内部，强制把它的状态改为 cancelled；二是跑到 task 内部，给 task 盖上猩红的取消戳（`self._must_cancel = True`）。
 5. Future 状态凝固，同上文一样**触发 Pager**，引发回调，把 Task 的唤醒钩子塞进 Ready Queue。
 6. 稍后 Event loop 交权，`task.wakeup()` 被运行，它查看 future 发现被取消，**代码走入路线 A**，截获 exc 并把 `CancelledError` 塞进 `self._step(CancelledError)`。
-7. `task._step` 带着巨大的异常无奈执行自杀命令（`self._coro.throw(asyncio.CancelledError)`）。异常顺着 Yield 链式反应回到 `await` 断点引爆炸弹，协程的业务逻辑在内存里刚一醒来就被炸死了。
+7. `task._step` 被唤醒后，先进行武器检查（执行下方代码块准备炸弹），带着巨大的异常无奈执行自杀命令（`self._coro.throw(asyncio.CancelledError)`）。异常顺着 Yield 链式反应回到 `await` 断点引爆炸弹，协程的业务逻辑在内存里刚一醒来就被炸死了。
+
+    - 详细的 weapons check 如下：
+    ``` python
+    # 核销取消标记（消费指令）
+    if self._must_cancel:
+        if not isinstance(exc, exceptions.CancelledError):
+            exc = self._make_cancelled_error()
+        self._must_cancel = False
+    ```
+   - Task 醒来先检查自身有无被取消(`if self._must_cancel`),如果没有，这段代码就跳过；如果有(即`if self._must_cancel` == `True`)，则做第二次检查，查看手里的武器对不对( `if not isinstance(exc, exceptions.CancelledError)` )。
+   
+   - 因为 Task 被取消，所以必须向协程内部抛入炸弹 `CancelledError`。如果发现手里的 exc 并不是 CancelledError（即 `not isinstance(...) ` 判定为 True），这就意味着情况不对，于是强行造一个新的炸弹来覆盖它（ `exc = self._make_cancelled_error()` ）。反之如果已经是了，就不必再造。
+    
+   - 最后，核销取消指令。不管是被取消还是正常回传，上面步骤都已经走过一轮，这个取消指令需要被核销，以便后续 task 不会被这一轮 task 的取消指令影响，所以 `self._must_cancel = False`。
 
 ***
 
@@ -140,3 +154,5 @@ def _step(self):
 
 
 ### 后续将添加Selector（I/O 多路复用器，如 epoll/kqueue） 部分
+
+.......
