@@ -1,10 +1,10 @@
 # Event loop
 
 * **Ready queue**
-    - `collections.deque`
-        - 时间复杂度
+    - `collections.deque`（[点击查看：双端队列剖析](collection_deque.md)）
+        - 时间复杂度（[点击查看时间复杂度](time_complexity.md)）
 * **Scheduled queue**
-    - minimum heap
+    - minimum heap（[点击查看：最小堆](minheap.md)）
 
 Event loop 主要任务就是循环交权。它内部有一个巨大的死循环 `while True`，它在死循环里一边监控任务是否超时，一边拿过 CPU 执行权，把它交给 Ready Queue 的下一个任务。
 
@@ -14,7 +14,7 @@ Event loop 主要任务就是循环交权。它内部有一个巨大的死循环
 * Event loop 会依次交权给 Ready Queue 里排队的任务，让它们走到内存里，运行起来。
 * Ready Queue 是一个双端队列。（[点击查看：双端队列剖析](collection_deque.md)）
 
-**Scheduled Queue 是一个超时监控区。**（（[点击查看：最小堆](minheap.md)））
+**Scheduled Queue 是一个超时监控区。**（[点击查看：最小堆](minheap.md)）
 * 它是一个基于时间调度的最小堆计划队列（Minimum heap），也就是时间越短排在越前。
 * Event loop 每循环一次 `while True`，第一步先去看一眼堆顶。当有任务超时，Event loop 就会拿出 Scheduled Queue 的堆顶，把它放进 Ready Queue，让它准备引爆自己。
 
