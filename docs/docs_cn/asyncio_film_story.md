@@ -2,15 +2,13 @@
 
 > 面向第一次接触 `asyncio` 的读者。
 >
-> 这篇文章先不死磕源码，而是用“电影片场”的画面，帮你理解 `Event Loop`、`Ready Queue`、`Task`、`Coroutine`、`Future` 和 `await` 之间的关系。
+> 用“电影片场”的画面，理解 `Event Loop`、`Ready Queue`、`Task`、`Coroutine`、`Future` 和 `await` 之间的关系。
 
 推荐继续阅读：[Event loop 剖析](event_loop.md)
 
 ---
 
-## 先记住一句话
-
-`asyncio` 不是让很多段 Python 代码真正同时运行。
+## `asyncio` 不是让很多段 Python 代码真正同时运行。
 
 它更像一个电影片场：
 
@@ -29,8 +27,6 @@
 ---
 
 ## 一、角色对照表
-
-先把几个核心概念放到同一个片场里：
 
 | asyncio 概念 | 片场比喻 | 你可以先这样理解 |
 | --- | --- | --- |
@@ -65,8 +61,6 @@ Event Loop 每次都会从 Ready Queue 里叫一个任务出来，让它获得�
 ---
 
 ## 三、Coroutine：程序员写好的剧本
-
-当你写下：
 
 ```python
 async def cook():
@@ -130,8 +124,6 @@ task = asyncio.create_task(cook())
 ---
 
 ## 五、asyncio.run(main())：片场正式开机
-
-当你写：
 
 ```python
 asyncio.run(main())
